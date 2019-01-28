@@ -1,0 +1,279 @@
+
+
+<style>
+    /*时间范围 样式*/
+    .options{
+        position: relative;
+        border: 1px solid #d2d6de;
+        display: inline-block;
+        padding-right: 10px;
+        min-width: 210%;
+        min-height: 34px;
+
+    }
+    .options div {
+        background: #3c8dbc;
+        color: white;
+        height: 26px;
+        margin: 3px 3px;
+
+        position: relative;
+        line-height: 26px;
+        font-size: 10px;
+        width: auto;
+        text-indent: 10px;
+
+    }
+    .o_choose{
+        float: left;
+    }
+    .o_close {
+        cursor: pointer;
+        color: #ccc;
+        margin: 0 5px auto;
+        z-index: 1000;
+    }
+     .o_closes {
+        
+        margin-right:8px;
+       
+    }
+    .select-dropdown{
+
+        position: absolute;
+        background-color: white;
+        border: 1px solid #d2d6de;
+        border-radius: 0;
+        z-index: 1051;
+        border-top: none;
+        top: 91%;
+        left: 15px;
+        overflow: hidden;
+    }
+    .select-options{
+        width: 91%;
+        max-height: 200px;
+        overflow-y: auto;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: none;
+        z-index: 100000;
+    }
+
+    .select-results-option{
+        cursor: pointer;
+        padding: 6px 12px;
+    }
+    .select-options-hover{
+        background-color: #3c8dbc;
+        color: white;
+    }
+    .select-options-selected{
+        background-color: #ddd;
+        color: #444;
+
+    }
+
+</style>
+<form action="{:url('')}" method="post" class="form_single">
+    <div class="box">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>项目名称</label>
+              <span class="">（项目名称|<span style="color:#f00">必填</span>）</span>
+              <input class="form-control" name="gift_name" placeholder="请输入项目名称" value="" type="text">
+            </div>
+          </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>开户银行</label>
+                    <span class="">（开户银行|<span style="color:#f00">必填</span>）</span>
+                    <input class="form-control" name="start_bank" placeholder="开户银行" value="" type="text">
+                </div>
+            </div>
+
+            
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>发票抬头</label>
+                    <span class="">（发票抬头|<span style="color:#f00">必填</span>）</span>
+                    <input class="form-control" name="invoice_gift" placeholder="发票抬头" value="" type="text">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>银行账号</label>
+                    <span class="">（银行账号|<span style="color:#f00">必填</span>）</span>
+                    <input class="form-control" name="bank_id" placeholder="银行账号" value="" type="text">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>发票电话</label>
+                    <span class="">(发票电话|<span style="color:#f00">必填</span>)</span>
+                    <input class="form-control" name="telephone" placeholder="发票电话" value="" type="text">
+                </div>
+            </div>
+
+           
+    <div class="col-md-2">
+                <div class="form-group">
+                    <label>发票</label>
+                    <span class="">（发票类型 |<span style="color:#f00">必填</span>）</span>
+                    <input class="form-control" name="invoice" placeholder="发票类型" value="{$info['goods_market_price']|default=''}" type="text">
+                </div>
+            </div>
+
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>增税</label>
+                    <span class="">（增税|<span style="color:#f00">必填</span>）</span>
+                    <input class="form-control" name="add_auty" placeholder="增税"  type="number">
+                </div>
+            </div>
+
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>外部公司编号|<span style="color:#f00">必填</span></label>
+              <input class="form-control" name="outerfirm_number" placeholder="外部公司编号" value="   " type="text">
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>外部商品号|<span style="color:#f00">必填</span></label>
+              <input class="form-control" name="outerfirm_middle" placeholder="请输入外部商品号" value="" type="text">
+            </div>
+          </div>
+        
+
+             <div class="col-md-2">
+                <div class="form-group">
+                    <label>发行数量</label>
+                    <span class="">（发行数量|<span style="color:#f00">必填</span>）</span>
+                    <input class="form-control" name="quantity" placeholder="发行数量" value="" type="number">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>发票地址</label>
+                    <span class="">（发票地址|<span style="color:#f00">必填</span>）</span>
+                    <textarea class="form-control" name="site" rows="3" placeholder="发票地址"></textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <label>开始时间：|<span style="color:#f00">必填</span></label>
+                    <input class="form-control layui-input" type="text" id="test1" name="open_time">
+                </div>
+                <script>
+                    layui.use('laydate', function(){
+                        var laydate = layui.laydate;
+
+                        //执行一个laydate实例
+                        laydate.render({
+                            elem: '#test1' //指定元素
+                        });
+                    });
+                </script>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <label>结束时间：|<span style="color:#f00">必填</span></label>
+                    <input class="form-control layui-input" type="text" id="test2" name="tie_time">
+                </div>
+                <script>
+                    layui.use('laydate', function(){
+                        var laydate = layui.laydate;
+
+                        //执行一个laydate实例
+                        laydate.render({
+                            elem: '#test2' //指定元素
+                        });
+                    });
+                </script>
+            </div>
+
+            <div class="form-group">
+                <p class="ahu" style="font-weight: bold; margin-left: 20px;">商品分类:</p>
+                <div class="col-sm-3" >
+                    <div class="options"></div>
+
+                    <ul class=" select-dropdown select-options "  >
+
+                        {foreach name="region" item="vo"}
+                        <li class="select-results-option" data-id="{$vo.id}"  aria-selected="false">{$vo.cate_name}</li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </div>
+
+
+
+        </div>
+      <div class="box-footer">
+
+           <!--   <input type="submit" name="提交"> -->
+        {include file="layout/edit_btn_group"/}
+      </div>
+
+      </div>
+      </div>
+</form>
+<script>
+$('.select-results-option').mouseover(function () {
+$(this).addClass('select-options-hover');
+$(this).siblings().removeClass('select-options-hover');
+});
+
+//调节select-options的宽度
+$('.select-options').width($('.options').width()+10)
+
+
+//隐藏和显示
+$('.options').click(function () {
+$('.select-options').toggle();
+});
+
+
+
+//标签选择
+var str='';
+$('.select-options').on('click','.select-results-option',function () {
+    if($(this).attr('aria-selected') == 'false'){
+        var value=$(this).html();
+        var id = $(this).attr('data-id');
+        var time=$(this).attr('data-time');
+        str='<div class="o_choose " ><span class="o_close" data-id="'+id+'"  onclick="o_delete(this);event.cancelBubble = true" >x</span ><span class="o_closes">'+value+'</span><input type="hidden" name="category_id[]" value="'+id+'"  >    </div>';
+        $('.options').append(str);
+        $(this).attr('aria-selected','true')
+        $(this).addClass('select-options-selected');
+        $('.select-options').toggle();
+    }
+})
+
+//标签删除
+function  o_delete(obtn) {
+    $(obtn).parent().remove();
+    var value=$(obtn).attr('data-id');
+    $('.select-options li').each(function () {
+        var value2=$(this).attr('data-id');
+        if($.trim(value) == $.trim(value2)){
+            $(this).removeClass('select-options-selected');
+            $(this).attr('aria-selected','false');
+        }
+    });
+
+}
+</script>
+
+

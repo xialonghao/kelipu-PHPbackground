@@ -1,0 +1,49 @@
+<div class="box">
+  <div class="box-header">
+        <div class="width_chown">
+        <ob_link><a href="{:url('freightAdd')}" class="btn"><i class="fa fa-plus"></i>添加运费配置</a></ob_link>
+        </div>
+        <div class="box-tools ">
+        <div class="input-group input-group-sm search-form chown">
+            <input name="search_data" class="pull-right search-input" value="{:input('search_data')}" placeholder="支持项目名称" type="text">
+            <div class="input-group-btn">
+              <button type="button" id="search" url="{:url('freightlist')}" class="btn btn-default"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="box-body table-responsive">
+    <table  class="table table-bordered table-hover">
+      <thead>
+      <tr>
+          <th>归属项目</th>
+          <th>收费地址</th>
+          <th>收费金额</th>
+          <th>操作</th>
+      </tr>
+      </thead>
+
+      {notempty name='list'}
+        <tbody>
+            {volist name='list' id='vo'}
+                <tr>
+                  <td>{$vo.gift_name}</td>
+                  <td>{if condition="$vo['all'] == 0"}{$vo['site_all']} {else} {$vo.site} {/if}</td>
+                  <td>{$vo.price}</td>
+                  <td class="col-md-2 text-center"> 
+                      <ob_link><a href="{:url('freightEdit', array('id' => $vo['id']))}" class="btn"><i class="fa fa-edit"></i> 编辑</a></ob_link>
+                      <ob_link><a class="btn confirm ajax-get"  href="{:url('freightDel', array('id' => $vo['id']))}"><i class="fa fa-trash-o"></i> 删除</a></ob_link>
+                  </td>
+                </tr>
+            {/volist}
+        </tbody>
+        {else/}
+        <tbody><tr class="odd"><td colspan="4" class="text-center" valign="top">{:config('empty_list_describe')}</td></tr></tbody>
+      {/notempty}
+    </table>
+  </div>
+  <div class="box-footer clearfix text-center">
+      <!--<input type="submit">     -->
+      {$list->render()}
+  </div>
+</div>

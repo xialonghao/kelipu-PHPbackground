@@ -1,0 +1,161 @@
+<form action="{:url()}" method="post" class="form_single">
+    <div class="box">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>商品名称</label>
+              <span class="">（<span style="color:#f00">必填</span>）</span>
+              <input class="form-control" name="goods_name" placeholder="请输入商品名称" value="{$info['goods_name']|default=''}" type="text">
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>商品分类</label>
+              <span class="">（请选择二级分类,否则小程序不显示此商品|<span style="color:#f00">必选</span>）</span>
+                <select name="category_id" class="form-control">
+                    <option value=''>请选择</option>
+                    {volist name='goods_category_list' id='vo'}
+                        <option value="{$vo['id']}" {notempty name="info['category_id']"}{if condition="$info['category_id'] eq $vo['id']"} selected="selected" {/if}{/notempty} >{$vo['cate_name']}
+                           {if condition="$vo['cate_affiliation'] neq 0 AND $vo['tid'] eq 0 "}
+                          (项目：{$vo['cate_affiliation']|is_project})
+                        {/if}
+                         {if condition="$vo['tid'] neq 0"}
+                        （此二级分类）
+                        {/if}
+                         {if condition="$vo['goods_category_default'] eq 0"}
+                        (登录前显示的分类)
+                        {/if}</option>
+                    {/volist}
+                </select>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>市场价格</label>
+              <span class=""></span>
+              <input class="form-control" name="goods_market_price" placeholder="请输入市场价格" value="{$info['goods_market_price']|default=''}" type="number" min="0">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>出售价格</label>
+              <span class="">（<span style="color:#f00">必填</span>）</span>
+              <input class="form-control" name="goods_price" placeholder="请输入出售价格" value="{$info['goods_price']|default=''}" type="number" min="0">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>库存</label>
+              <span class="">（<span style="color:#f00">必填</span>）</span>
+              <input type="number" min="0" class="form-control" name="goods_repertory" placeholder="请输入库存" value="{$info['goods_repertory']|default=''}" type="text">
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>单位</label>
+              <span class="">（<span style="color:#f00">必填</span>）</span>
+              <input class="form-control" name="goods_unit" placeholder="请输入单位" value="{$info['goods_unit']|default=''}" type="text">
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>外部商品id</label>(请对准自有的商品库id)</span>
+              <input class="form-control" name="outer_goods_id" placeholder="请输入外部商品id" value="{$info['outer_goods_id']|default=''}" type="text">
+            </div>
+          </div>
+
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>ERP商品号</label>
+              <span class="">(<span style="color:#f00">必填</span>)</span>
+              <input class="form-control" name="goods_erp" placeholder="请输入ERP商品号" value="{$info['goods_erp']|default=''}" type="text">
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>外部商品号</label>
+              <span class="">（<span style="color:#f00">必填</span>）</span>
+              <input class="form-control" name="goods_clp" placeholder="请输入外部商品号" value="{$info['goods_clp']|default=''}" type="text">
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+                <label>商品列表图片地址</label>
+                <span class="">（<span style="color:#f00">必填</span>）</span>
+                    <textarea class="form-control" name="goods_img" rows="3" placeholder="请输入图片地址">{$info['goods_img']|default=''}</textarea>
+            </div>
+          </div>
+
+       <!--    <div class="col-md-6">
+            <div class="form-group">
+                <label>描述</label>
+                <span class="">（商品描述信息/简介）</span>
+                <textarea class="form-control" name="goods_description" rows="3" placeholder="请输入商品描述信息/简介">{$info['goods_description']|default=''}</textarea>
+            </div>
+          </div> -->
+
+          <div class="col-md-12">
+            <div class="form-group">
+                <label>商品详情轮播图片</label>
+                <span class="">（请上传多图片、<span style="color: #f00">尺寸：750*586 、图片格式：png，jpg</span>）</span>
+                <br/>
+
+                {assign name="img_ids" value="$info.img_ids|default=''" /}
+                {:widget('file/index', ['name' => 'img_ids', 'value' => $img_ids, 'type' => 'imgs'])}
+
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+                <label>是否设置精品</label>
+                <span>（默认否,选择是,为精品）</span>
+                <div>
+                    <label class="margin-r-5"><input type="radio" name="is_boutique" value="0"> 是</label>
+                    <label><input type="radio" name="is_boutique"  value="1"> 否</label>
+                </div>
+            </div>
+          </div>
+
+
+
+          </div>
+        <div class="row">
+
+
+          <div class="col-md-12">
+            <div class="form-group">
+                <label>商品内容|<span style="color:#f00">必填、图片上传宽度：750 、无高度限制、格式：jpg，png</span></label>
+                <textarea class="form-control textarea_editor" name="goods_content" placeholder="请输入文章内容">{$info['goods_content']|default=''}</textarea>
+                {:widget('editor/index', array('name'=> 'goods_content','value'=>''))}
+            </div>
+          </div>
+
+        </div>
+
+      <div class="box-footer">
+
+        <input type="hidden" name="id" value="{$info['id']|default='0'}"/>
+
+        {include file="layout/edit_btn_group"/}
+
+      </div>
+
+      </div>
+      </div>
+</form>
+
+<script type="text/javascript">
+    
+   ob.setValue("is_boutique", {$info.is_boutique|default=1});
+   //ob.setValue("pid", {$info.pid|default=0});
+       
+</script>
+

@@ -1,0 +1,110 @@
+<form action="{:url()}" method="post" class="form_single">
+    <div class="box">
+      <div class="box-body">
+        <div class="row" style="margin: 0;">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>名称</label>
+              <span>（商品分类名称）</span>
+              <input class="form-control" name="cate_name" placeholder="请输入商品分类名称" value="{$info['cate_name']|default=''}" type="text">
+            </div>
+          </div>
+ <input type="hidden" name="url" value= "{$url_arr}">
+ <input type="hidden" name="tids" value= "{$tids}">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>分类</label>
+              <span class="">（商品分类）</span>
+                <select name="tid" class="form-control">
+                   <!-- {notempty name="info['id']"}   <option value="0">顶级</option>{/notempty} -->
+               	{php}
+               	if(empty($info['tid']))
+               	{
+               		echo "<option value='0'>顶级</option>";
+               	}else if($info['tid']==0)
+               	{
+               		echo "<option value='0'>顶级</option>";
+               	}
+
+               	{/php}
+                    {volist name='article_category_list' id='vo'}
+                        <option value="{$vo['id']}" {notempty name="info['tid']"}{if condition="$info['tid'] eq $vo['id']"} selected="selected" {/if}{/notempty} >
+                          {$vo['cate_name']}
+                           {if condition="$vo['cate_affiliation'] neq 0 AND $vo['tid'] eq 0 "}
+                          	(项目：{$vo['cate_affiliation']|is_project})
+                        	{/if}
+                          {if condition="$vo['goods_category_default'] eq 0"}
+                        (登录前显示的顶级分类)
+                        {/if}</option>
+                    {/volist}
+                </select>
+            </div>
+          </div>
+           <div class="col-md-6">
+            <div class="form-group">
+              <label>广告图链接</label>
+              <span class="">（广告图链接）</span>
+                <input class="form-control" name="jump_url" placeholder="请输入广告图链接" value="{$info['jump_url']|default=''}" type="text">
+            </div>
+          </div>
+           <div class="col-md-6">
+            <div class="form-group">
+                <label>广告图</label>
+                <span class="">（只给顶级分类设置、<span style="color:#f00">尺寸：506*208、格式：png，jpg </span>）</span>
+                <br/>
+                {assign name="jump_thumb" value="$info.jump_thumb|default='0'" /}
+                {:widget('file/index', ['name' => 'jump_thumb', 'value' => $jump_thumb, 'type' => 'img'])}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+                <label>商品分类封面图片</label>
+                <span class="">（图片<span style="color:#f00">尺寸：90x90 、 格式：png，jpg</span>）</span>
+                <br/>
+                {assign name="cate_thumb" value="$info.cate_thumb|default='0'" /}
+                {:widget('file/index', ['name' => 'cate_thumb', 'value' => $cate_thumb, 'type' => 'img'])}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+                <label>是否是推荐</label>
+                <span style="color:#f00">（默认推荐）</span>
+                <div>
+                    <label class="margin-r-5"><input type="radio" name="is_recommend" value="1"> 是</label>
+                    <label><input type="radio" name="is_recommend"  value="0"> 否</label>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
+                <label>是否是登录后显示的分类</label>
+                <span style="color:#f00">（二级分类无需操作）</span>
+                <div>
+                    <label class="margin-r-5"><input type="radio" name="goods_category_default" value="1"> 是</label>
+                    <label><input type="radio" name="goods_category_default"  value="0"> 否</label>
+                </div>
+            </div>
+          </div>
+
+  
+
+      <div class="box-footer">
+
+        <input type="hidden" name="id" value="{$info['id']|default='0'}"/>
+
+        <!-- <input type="submit" name=""> -->
+        {include file="layout/edit_btn_group"/}
+
+      </div>
+
+      </div>
+
+</form>
+<script type="text/javascript">
+    
+   ob.setValue("goods_category_default", {$info.goods_category_default|default=1});
+    ob.setValue("is_recommend", {$info.is_recommend|default=1});
+   //ob.setValue("pid", {$info.pid|default=0});
+       
+</script>

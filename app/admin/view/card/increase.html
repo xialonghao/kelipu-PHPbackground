@@ -1,0 +1,52 @@
+<form action="{:url()}" method="post" class="form_single">
+    <div class="box">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>积分卡编号</label>
+              <span class="">|<span style="color:#f00">不得修改</span></span>
+              <input class="form-control" name="" placeholder="积分卡编号" value="{$info['gift_number']|default=''}" type="text" disabled="disabled">
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>面值</label>
+               <span class="">|<span style="color:#f00">不得修改</span></span>
+              <input class="form-control" name="" placeholder="请输入金额" value="{$info['bei_money']|default=''}" type="number" disabled="disabled">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>余额</label>
+              <span class="">|<span style="color:#f00">不得修改</span></span>
+              <input class="form-control" name="" placeholder="请输入金额" value="{$info['money']|default=''}" type="number" disabled="disabled">
+            </div>
+          </div>
+          
+           <div class="col-md-6" >
+            <div class="form-group">
+              <label>增减余额</label>
+              <span class="">|<span style="color:#f00">慎重输入(保留小数两位值，四舍五入)</span></span>
+              <input class="form-control" name="integral" placeholder="请输入金额" value="0.00" type="text"  style="width: 383px" >
+            </div>
+          </div>
+ 
+          </div>
+  
+
+      <div class="box-footer">
+
+        <input type="hidden" name="id" value="{$info['id']|default='0'}"/>
+
+        {include file="layout/edit_btn_group"/}
+
+      </div>
+
+      </div>
+      </div>
+</form>
+
+

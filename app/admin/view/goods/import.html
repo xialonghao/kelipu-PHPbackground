@@ -1,0 +1,162 @@
+<!-- <link rel="stylesheet" href="__STATIC__/module/admin/ext/adminlte/plugins/iCheck/all.css">
+<script src="__STATIC__/module/admin/ext/adminlte/bootstrap/js/bootstrap.min.js"></script> -->
+<style type="text/css">
+.nones{ display: none; }
+
+</style>
+<form action="{:url()}" method="post" class="form_single">
+    <div class="box">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-12 select_ld">
+            <div class="form-group">
+              <div class="clear">
+              <label>商品分类</label>
+              <span class="" style="color: #f00;">（请选择二级分类导入,否则小程序不显示此商品）</span>
+             </div>
+             <div class="ld_select">
+                 <select name="category1" id="category1" onchange="category(this)" class="form-control">
+                    <option value=""> 请选择</option>
+                     <option value="D1">登录前分类</option>
+                    {volist name='project_list' id='vo'}
+                         <option value="{$vo.id}">{$vo.gift_name}</option>
+                    {/volist}
+                </select>
+                <select name="category2" id="category2"  onchange="category(this)" class="form-control nones">
+                    
+                </select>
+                <select name="category_id" id="category_id" class="form-control nones">
+                        
+                 
+                </select>
+                 <input type="hidden" name="files_excel" value="" id="files_excel">
+                 </div>
+            </div>
+          </div>
+<script type="text/javascript">
+    function category(obj) {
+      // console.log(obj);
+      $.ajax({
+        url:"{:url('goods/category_select')}",
+        data:{'name':obj.name,'value':obj.value},
+        success:function(res){
+           // layer.msg('111');
+            // console.log(res);
+           if(res.code=='500')
+           {
+            layer.msg(res.msg);
+           }else
+           {
+              if(res.code=='201')
+              {
+                 $('#category2').addClass('nones');
+                 $('#category_id').addClass('nones');
+                 return ;
+              }
+              if(res.code=='202')
+              {
+                 
+                 $('#category_id').addClass('nones');
+                 return ;
+              }
+              if(res.name=='category2')
+              {
+                 $('#category2').find("option").remove();
+                 $('#category2').append(res.data);
+                 $('#category2').removeClass('nones');
+                 $('#category_id').find("option").remove();
+                 $('#category_id').addClass('nones');
+              }
+              if(res.name=='category_id')
+              {
+                 $('#category_id').find("option").remove();
+                 $('#category_id').append(res.data);
+                 $('#category_id').removeClass('nones');
+                // $('#category2').removeClass('nones');
+              }
+             
+           }
+        
+        }
+      });
+    }
+
+</script>
+          
+          <div class="col-md-12" style="margin-top: 20px;">
+            <div class="form-group">
+              <label><a href="__STATIC__/module/admin/excel/Goods_template.xlsx" target="_blank" style="color:#f00">点击下载商品导入模版</a></label>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
+                <label>商品数据导入</label>
+                <span class="">（商品数据导入,如果数据量太大请耐心等待）</span>
+                <br/>
+                <button type="button" class="layui-btn" style="background: #3c8dbc;"  id="files" name="file"><i class="layui-icon"></i>上传文件(.xlsx、.xls文件)</button>
+               <input type="text"  value="" id="look"  disabled="disabled" class="none" >
+               <div class="click_hide" style="display: inline-block; visibility:hidden; margin-left: 5px;cursor: pointer;">
+                <img src="/static/widget/admin/file/uploadify-cancel.png" alt="">
+               </div>
+               <script type="text/javascript">
+                 layui.use('upload', function(){
+                   var $ = layui.jquery
+                   ,upload = layui.upload;
+                    upload.render({ //允许上传的文件后缀
+                    elem: '#files' 
+                    ,url: "{:url('Goods/import')}"
+                    ,accept: 'file' //普通文件
+                    ,exts: 'xlsx|xls' //只允许上传压缩文件
+                    ,done: function(res){
+
+                      if(res.code==200)
+                      {
+                        // console.log(res.data);
+                        $("#files_excel").val(res.data);
+                        $("#look").val(res.data);
+                        // alert(res.msg);
+                        layer.msg(res.msg);
+                        $(".click_hide").css("visibility","visible");
+                        $(".click_hide").css("display","inline-block");
+                        $(".none").css("visibility","visible");
+                        $(".none").css("display","inline-block");
+                      }
+                      if(res.code==300)
+                      {
+                        layer.msg(res.msg);
+                      }
+                    }
+                 });
+              });
+                 $(".click_hide").click(function(){
+                  $("#look").val("");
+                  $(".click_hide").css("visibility","hidden");
+                  $(".click_hide").css("display","none");
+                        $(".none").css("display","none");
+                 })
+               </script>
+            </div>
+          </div>
+            
+ 
+          </div>
+       
+
+      <div class="box-footer" style="padding-left: 0;padding-top: 15px;">
+
+        <!-- <input type="hidden" name="id" value="{$info['id']|default='0'}"/> -->
+         <!-- <input type="submit"  value="提交"/> -->
+        <button  type="submit" class="btn ladda-button ajax-post" data-style="slide-up" target-form="form_single">
+    <span class="ladda-label"><i class="fa fa-send"></i> 确 定</span>
+        </button>
+
+<!-- <a class="btn" onclick="javascript:history.back(-1);return false;"><i class="fa fa-history"></i> 返 回</a>
+ --><!-- 
+        {include file="layout/edit_btn_group"/} -->
+
+      </div>
+
+      </div>
+      </div>
+</form>

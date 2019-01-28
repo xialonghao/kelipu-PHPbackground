@@ -1,0 +1,86 @@
+<div class="box">
+  <div class="box-header">
+        <div class="width_chown"><ob_link><a href="{:url('goodsAdd')}" class="btn"><i class="fa fa-plus"></i> 添加商品</a></ob_link></div>
+        <div class="box-tools ">
+        <div class="input-group input-group-sm search-form chown">
+           
+        	
+            <input name="search_data" class="pull-right search-input chownwidth" value="{:input('search_data')}" placeholder="二级分类|erp|商品名|外部商品号" type="text">
+            <select style="width: 150px;height: 30px" name="category_id">
+              <option value="">请选择</option>
+              {volist name='goods_category_list' id='vo'}
+                        <option value="{$vo['id']}" {notempty name="$where['g.category_id']"}{if condition="$where['g.category_id'] eq $vo['id']"} selected="selected" {/if}{/notempty} >{$vo['cate_name']}
+                          {if condition="$vo['cate_affiliation'] neq 0 AND $vo['tid'] eq 0 "}
+                          (项目：{$vo['cate_affiliation']|is_project})
+                        {/if}
+                         {if condition="$vo['goods_category_default'] eq 0"}
+                        (登录前显示的分类)
+                        {/if}</option>
+                    {/volist}
+          </select>
+            <select style="width: 150px;height: 30px" name="project_id">
+              <option value="">请选择</option>
+              {volist name='project_list' id='vo'}
+                        <option value="{$vo['id']}" {notempty name="$where['p.id']"}{if condition="$where['p.id'] eq $vo['id']"} selected="selected" {/if}{/notempty} >{$vo['gift_name']}
+                         </option>
+                        }
+                    {/volist}
+          </select>
+            <div class="input-group-btn">
+              <button type="button" id="search" url="{:url('goodslist')}" class="btn btn-default"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="box-body table-responsive">
+    <table  class="table table-bordered table-hover">
+      <thead>
+      <tr>
+          <th>erp商品号</th>
+           <th>名称</th>
+          <th>商品分类(一级/二级分类)</th>
+       <!--    <th>市场价格</th> -->
+          <th>出售价格</th>
+           <th>库存</th>
+           <th style="width: 200px">是否是登录后</th>
+          <th>是否上架</th>
+          <th>是否精品</th>
+          <th>排序</th>
+          <th>链接地址</th>
+          <th>操作</th>
+      </tr>
+      </thead>
+
+      {notempty name='list'}
+        <tbody>
+            {volist name='list' id='vo'}
+                <tr>
+              
+                 
+                  <th>{$vo.goods_erp}</th>
+                   <td>{$vo.goods_name}</td>
+                  <td>{$vo.tid|goods_tid|default="无上级"}<span style="color: #f00">  /  </span>{$vo.cate_name}</td>
+                <!--   <td>{$vo.goods_market_price}</td> -->
+                  <td>{$vo.goods_price}</td>
+                   <th>{$vo.goods_repertory}</th>
+                  <td>{$vo.tid|goods_default}</td>
+                  <td><ob_link><a class="ajax-get" href="{:url('setStatustt', array('ids' => $vo['id'], 'status' => (int)!$vo['status']))}">{$vo.status_text}</a></ob_link></td>
+                  <td>{if condition="$vo.is_boutique eq 1"}否 {else /} 是{/if}</td>
+                    <td><input type="text" class="sort-th sort-text" href="{:url('setSorts')}" id="{$vo.id}" value="{$vo.sort}" /></td>
+                    <td>../shopdetails/shopdetails?goods_id={$vo.id}</td>
+                  <td class="col-md-2 text-center">
+                      <ob_link><a href="{:url('goodsEdit', array('id' => $vo['id']))}" class="btn"><i class="fa fa-edit"></i> 编辑</a></ob_link>
+                      <ob_link><a class="btn confirm ajax-get"  href="{:url('goodsDel', array('id' => $vo['id']))}"><i class="fa fa-trash-o"></i> 删除</a></ob_link>
+                  </td>
+                </tr>
+            {/volist}
+        </tbody>
+        {else/}
+        <tbody><tr class="odd"><td colspan="11" class="text-center" valign="top">{:config('empty_list_describe')}</td></tr></tbody>
+      {/notempty}
+    </table>
+  </div>
+  <div class="box-footer clearfix text-center">
+      {$list->render()}
+  </div>
+</div>

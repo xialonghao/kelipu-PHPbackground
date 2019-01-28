@@ -1,0 +1,91 @@
+<div class="box">
+  <div class="box-header">
+        <div class="width_chown select_all_box ">
+        <ob_link><a href="{:url('index')}" class="btn"><i class="fa fa-plus"></i>上传积分卡</a></ob_link>
+        <div class="select_all">{include file="layout/batch_btn_group"/}</div>
+        </div>
+        <div class="box-tools ">
+        <div class="input-group input-group-sm search-form chown">
+          <select style="width: 150px;height: 30px" name="project_id">
+              <option value="">请选择项目</option>
+              {volist name='project_list' id='vo'}
+                        <option value="{$vo['id']}" {notempty name="$where['p.id']"}{if condition="$where['p.id'] eq $vo['id']"} selected="selected" {/if}{/notempty} >{$vo['gift_name']}
+                         </option>
+                    {/volist}
+          </select>
+           <select style="width: 150px;height: 30px" name="card_status">
+              <option value="">请选择积分卡状态</option>
+              <option value="1"  {notempty name="$where['c.status']"}{if condition="$where['c.status'] eq 1"} selected="selected" {/if}{/notempty}>正常</option>
+               <option value="2"  {notempty name="$where['c.statuse']"}{if condition="$where['c.statuse'] eq 2"} selected="selected" {/if}{/notempty}>禁用</option>
+                <option value="3" {notempty name="$where['c.money_starte']"}{if condition="$where['c.money_starte'] eq 3"} selected="selected" {/if}{/notempty}>未使用</option>
+                 <option value="4" {notempty name="$where['c.money_start']"}{if condition="$where['c.money_start'] eq 1"} selected="selected" {/if}{/notempty}>已使用</option>
+          </select>
+            <input name="search_data" class="pull-right search-input" value="{:input('search_data')}" placeholder="支持项目名称|礼品编号|手机号" type="text">
+            <div class="input-group-btn">
+              <button type="button" id="search" url="{:url('cardlist')}" class="btn btn-default"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+  </div>
+   
+  <div class="box-body table-responsive">
+    <table  class="table table-bordered table-hover select_all">
+      <thead>
+      <tr>
+		   <th class="checkbox-select-all">
+              <label>
+                <input class="flat-grey js-checkbox-all" type="checkbox">
+              </label>
+          </th>      	 
+          <th>礼品卡号</th>
+          <th>归属项目</th>
+          <th>开始时间</th>
+          <th>结束时间</th> 
+          <th>是否禁用</th>
+           <th>余额</th>
+          <th>操作</th>
+          <th>谨慎操作</th>
+      </tr>
+      </thead>
+
+      {notempty name='list'}
+        <tbody>
+            {volist name='list' id='vo'}
+                <tr>
+                   <td>
+		              <label>
+		                  <input class="flat-grey" type="checkbox" name="ids" value="{$vo.id}">
+		              </label>
+		          </td>
+                  <td>{$vo.gift_number}</td>
+                  <td>{$vo.gift_name}</td>
+                  <td>{$vo.open_time}</td>
+                  <td>{$vo.tie_time}</td>
+                  <td><ob_link><a class="ajax-get" href="{:url('setStatus', array('ids' => $vo['id'], 'status' => (int)!$vo['status']))}">{$vo.status_text}</a></ob_link></td>
+                  <th>{$vo.money}</th>
+                  <td class="col-md-2 text-center">
+                      <ob_link><a href="{:url('cardRunning', array('card_id' => $vo['id']))}" class="btn"><i class="fa fa-edit"></i>查看流水</a></ob_link>
+                      <ob_link><a href="{:url('cardEdit', array('id' => $vo['id']))}" class="btn"><i class="fa fa-edit"></i> 编辑</a></ob_link>
+                      <ob_link><a class="btn confirm ajax-get"  href="{:url('cardDel', array('id' => $vo['id']))}"><i class="fa fa-trash-o"></i> 删除</a></ob_link>
+                  </td>
+                   <td class="col-md-2 text-center">
+                   <ob_link><a href="{:url('card/increase', array('id' => $vo['id']))}" class="btn"><i class="fa fa-edit"></i>增减积分</a></ob_link>
+                   </td>
+                  
+                </tr>
+            {/volist}
+        </tbody>
+        {else/}
+        <tbody><tr class="odd"><td colspan="8" class="text-center" valign="top">{:config('empty_list_describe')}</td></tr></tbody>
+      {/notempty}
+      
+    
+    </table>
+    
+   
+  </div>
+  <div class="box-footer clearfix text-center">
+      <!--<input type="submit">     -->
+      {$list->render()}
+  </div>
+</div>

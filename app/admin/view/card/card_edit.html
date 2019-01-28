@@ -1,0 +1,125 @@
+<form action="{:url()}" method="post" class="form_single">
+    <div class="box">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>积分卡编号</label>
+              <span class="">|<span style="color:#f00">必填</span></span>
+              <input class="form-control" name="gift_number" placeholder="积分卡编号" value="{$info['gift_number']|default=''}" type="text">
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>面值</label>
+               <span class="">|<span style="color:#f00">不得修改</span></span>
+              <input class="form-control" name="" placeholder="请输入金额" value="{$info['bei_money']|default=''}" type="number" disabled="disabled">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>余额</label>
+              <span class="">|<span style="color:#f00">不得修改</span></span>
+              <input class="form-control" name="" placeholder="请输入金额" value="{$info['money']|default=''}" type="number" disabled="disabled">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>积分卡批次</label>
+              <span class="">|<span style="color:#f00">必填</span></span>
+              <input class="form-control" name="gift_id" placeholder="请输入积分卡批次" value="{$info['gift_id']|default=''}" type="text">
+            </div>
+          </div>
+
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>兑换规则</label>
+              <span class="">|<span style="color:#f00">必填</span></span>
+              <input class="form-control" name="exchange" placeholder="请输入兑换规则" value="{$info['exchange']|default=''}" type="text">
+            </div>
+          </div>
+
+      
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>开始时间</label>
+              <span class="">|<span style="color:#f00">必填</span></span>
+              <input class="form-control" name="open_time" id="test1" placeholder="请选择开始时间" readonly="readonly" value="{$info['open_time']|default=''}" type="text">
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>结束时间</label>
+              <span class="">|<span style="color:#f00">必填</span></span>
+              <input class="form-control" name="tie_time" id="test2" placeholder="请选择结束时间"  readonly="readonly" value="{$info['tie_time']|default=''}" type="text">
+            </div>
+          </div>
+
+          <script>
+                    layui.use('laydate', function(){
+                        var laydate = layui.laydate;
+
+                              var startdate =  laydate.render({
+                            elem: '#test1' //指定元素
+                            
+                              , done: function (value, dates,endDate) {
+                                console.log('开始');
+ 
+                                enddate.config.min = {
+                                    year: dates.year,
+                                    month: dates.month - 1,//关键
+                                    date: dates.date,
+                                    hours: dates.hours,
+                                    minutes: dates.minutes,
+                                    seconds: dates.seconds,
+                                  } 
+                                }
+                        });
+                        //执行一个laydate实例
+                     var enddate = laydate.render({
+                            elem: '#test2' //指定元素
+                           
+                           , done: function (value, dates) {
+                            startdate.config.max = {
+                                year: dates.year,
+                                month: dates.month - 1,//关键
+                                date: dates.date,
+                                hours: dates.hours,
+                                minutes: dates.minutes,
+                                seconds: dates.seconds,
+                               
+                            }
+                        }
+                        });
+                    });
+                </script>
+    
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>绑定手机号</label>
+              <span class=""></span>
+              <input class="form-control" name="mobile" placeholder="请输入绑定手机号" value="{$info['mobile']|default=''}" type="text">
+            </div>
+          </div>
+
+          </div>
+  
+
+      <div class="box-footer">
+
+        <input type="hidden" name="id" value="{$info['id']|default='0'}"/>
+
+        {include file="layout/edit_btn_group"/}
+
+      </div>
+
+      </div>
+      </div>
+</form>
+
+

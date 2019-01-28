@@ -1,0 +1,91 @@
+<form action="{:url()}" method="post" class="form_single">
+    <div class="box">
+      <div class="box-body">
+        <div class="row">
+
+          <div class="col-md-3" >
+            <div class="form-group">
+              <label>项目下拉</label>
+              <span class="">（请务必选择一个项目）</span>
+                <select name="project_id" class="form-control">
+                        <option value="">请选择</option>
+                    {volist name='project_list' id='vo'}
+                        <option value="{$vo['id']}"  {notempty name="info['project_id']"}{if condition="$info['project_id'] eq $vo['id']"} selected="selected" {/if}{/notempty}>{$vo['gift_name']}</option>
+                    {/volist}
+                </select>
+            </div>
+          </div>
+ 
+
+         <div class="col-md-2" >
+            <div class="form-group">
+              <label>选择省</label>
+              <select name="user.province" id="province" class="form-control"></select>
+  
+            </div>
+          </div>
+          <div class="col-md-2" >
+            <div class="form-group">
+           <label>选择市{$city}</label>
+              <select name="user.city" id="city" class="form-control"></select>
+            
+            </div>
+          </div>
+          <div class="col-md-2" >
+            <div class="form-group">
+               <label>选择区</label>
+              <select name="user.area" id="area" class="form-control"></select><br>
+            </div>
+          </div>
+        
+         <div class="col-md-2">
+            <div class="form-group">
+              <label>运费金额</label>
+              <span class="">（运费金额）</span>
+              <input class="form-control"  name="price" placeholder="请输入市场价格" value="{$info['price']|default=1}" type="number">
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
+                <label>地区所有选项</label>
+                <span style="color:#f00">（选择是，自动屏蔽二级三级地址）</span>
+                <div>
+                    <label class="margin-r-5"><input type="radio" name="all" value="1"> 是</label>
+                    <label><input type="radio" name="all"  value="0"> 否</label>
+                </div>
+            </div>
+          </div>
+      
+          
+
+     
+        <script language="javascript" defer >
+        new PCAS("user.province","user.city","user.area","{$prov}","{$city}","{$area}");
+
+        </script>
+         
+
+        </div>
+       
+
+      <div class="box-footer">
+
+        <input type="hidden" name="id" value="{$info['id']|default='0'}"/>
+
+  
+        {include file="layout/edit_btn_group"/}
+
+      </div>
+
+      </div>
+      </div>
+</form>
+
+<script type="text/javascript">
+    
+   ob.setValue("all", {$info.all|default=0});
+   //ob.setValue("pid", {$info.pid|default=0});
+       
+</script>
+

@@ -1,0 +1,71 @@
+<div class="box">
+  <div class="box-header ">
+    <div class="width_chown">
+    <ob_link><a class="btn" href="{:url('bannerAdd')}"><i class="fa fa-plus"></i> 新 增</a></ob_link>
+    </div>
+    <!-- &nbsp;
+    <ob_link><a class="btn export" url="{:url('exportMemberList')}"><i class="fa fa-download"></i> 导 出</a></ob_link> -->
+
+    <div class="box-tools ">
+        <div class="input-group input-group-sm search-form chown">
+            <input name="search_data" class="pull-right search-input" value="{:input('search_data')}" placeholder="支持图片名称|项目名称" type="text">
+            <div class="input-group-btn">
+              <button type="button" id="search" url="{:url('Bannerlist')}" class="btn btn-default"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+    <br/>
+  </div>
+
+  <div class="box-body table-responsive">
+    <table  class="table table-bordered table-hover">
+      <thead>
+      <tr>
+          <th>图片名称</th>
+          <th>图片预览</th>
+          <th>最终操作人</th>
+          <th>归属项目</th>
+          <th>顺序</th>
+          <th>操作</th>
+      </tr>
+      </thead>
+
+      {notempty name='list'}
+        <tbody>
+            {volist name='list' id='vo'}
+                <tr>
+                  <td>{$vo.img_name}</td>
+                  <td><img class="admin-list-img-size" src="{$vo.ids|get_picture_url}"/></td>
+                  <td>{$vo->nickname}</td>
+                  <td>{$vo->cate_affiliation|is_porject_banner}</td>
+                  <td><input type="text" class="sort-th sort-text" href="{:url('setSort')}" id="{$vo.id}" value="{$vo.sort}" /></td>
+                  <!-- <td>{$vo.status_text}</td> -->
+                  <td class="col-md-3 text-center">
+                      <ob_link><a href="{:url('bannerEdit', array('id' => $vo['id']))}" class="btn"><i class="fa fa-edit"></i> 编 辑</a></ob_link>
+                      &nbsp;
+                      <!-- <ob_link><a class="btn"  href="{:url('memberAuth', array('id' => $vo['id']))}"><i class="fa fa-user-plus"></i> 授 权</a></ob_link>
+                      &nbsp; -->
+                      <ob_link><a class="btn confirm ajax-get" href="{:url('bannerDel', array('id' => $vo['id']))}"><i class="fa fa-trash-o"></i> 删 除</a></ob_link>
+                  </td>
+                </tr>
+            {/volist}
+        </tbody>
+        {else/}
+        <tbody><tr class="odd"><td colspan="8" class="text-center" valign="top">{:config('empty_list_describe')}</td></tr></tbody>
+      {/notempty}
+    </table>
+  </div>
+
+  <div class="box-footer clearfix text-center">
+      {$list->render()}
+  </div>
+
+</div>
+
+<script>
+    //导出功能
+    $(".export").click(function(){
+
+        window.location.href = searchFormUrl($(".export"));
+    });
+</script>

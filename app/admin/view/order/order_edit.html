@@ -1,0 +1,187 @@
+<div class="box">
+  <div class="box-header">
+        <!-- <ob_link><a href="{:url('goodsAdd')}" class="btn"><i class="fa fa-plus"></i> 添加商品</a></ob_link> -->
+        <!-- <div class="box-tools "> -->
+     <!--    <div class="input-group input-group-sm search-form">
+            <input name="search_data" class="pull-right search-input" value="{:input('search_data')}" placeholder="支持收货人姓名,手机号" type="text">
+            <div class="input-group-btn">
+              <button type="button" id="search" url="{:url('goodslist')}" class="btn btn-default"><i class="fa fa-search"></i></button>
+            </div>
+        </div> -->
+        <div class="input-group-btn box-header">
+              <a type="button" id="search" href="javascript:window.location.href='/klp.php/order/orderlist.html';" class="btn btn-default">返回</a>
+            <ob_link><a class="btn confirm btn-default ajax-get" style="margin-left: 10px;"  href="{:url('orderLogistics',['id'=>$info['id']])}"> 更新物流信息</a></ob_link>
+        </div>
+    <!-- </div> -->
+  </div>
+  <div class="box-body table-responsive">
+    <table  class="table table-bordered table-hover">
+      <thead>
+      <tr >
+          <th colspan="8" style=" text-align: center ;  font-size: 20px; background-color: #f5f5f5">基本信息</th>
+      </tr>
+      <tr>
+          <th>订单ID</th>
+          
+          <th>积分卡号</th>
+          <th>订单号</th>
+          <th>应付金额</th>
+          <th>支付状态</th>
+          <th>下单时间</th>
+          <th>支付时间</th>      
+          <th>订单状态</th>
+      </tr>
+      </thead>
+
+     
+        <tbody>
+          
+                <tr>
+                  <td>{$info.id}</td>
+                  <td>{$info.card_sn}</td>
+                  <td>{$info.order_sn}</td>
+                  <td>{$info.order_price}</td>
+                  <td>{if $info['order_pay']==1}已支付{else / }未支付{/if}</td> 
+                  <td>{$info.create_time}</td>
+                  <td>{if $info['order_pay_time']==0}无{else / }{$info['order_pay_time']|date='Y-m-d H:i:s',###}{/if}</td>
+                  <td>
+                      {if $info['order_status']==0}
+                       新建
+                      {elseif  $info['order_status']==1 /}
+                        签收
+                      {elseif   $info['order_status']==4 /}
+                        退换货中
+                        {elseif  $info['order_status']==5 /}
+                         已发货
+                         {elseif  $info['order_status']=='-3' /}
+                        拒收
+                      {elseif  $info['order_status']=='-2' /}
+                          取消
+                      {/if}
+                  </td> 
+                </tr>
+        </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="box" style="border-top:3px solid #fff;">
+  
+  <div class="box-body table-responsive">
+    <table  class="table table-bordered table-hover">
+      <thead>
+      <tr >
+          <th colspan="5" style=" text-align: center ;  font-size: 20px; background-color: #f5f5f5">订单明细</th>
+      </tr>
+      <tr>
+          <th style="width: 10%;" >Erp商品号</th>
+          <th style="width: 50%;" >商品名称</th>
+          <th style="width: 10%; text-align:right;">数量</th>
+          <th style="width: 10%;text-align:right;">价格</th>
+          <th style="width: 30%;">小计</th>
+       
+     
+      </tr>
+      </thead>
+
+     
+        <tbody>
+              {volist name="order_goods_list" id="goods"}
+                <tr>
+                  <td style="text-align:left;">{$goods.goods_erp|default=''}</td>
+                  <td><img src="{$goods.goods_img}" height="50" width="50">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {$goods.goods_name|default=''}</td>
+                  <td style="text-align:right;">{$goods.goods_amount|default=''}</td>
+                  <td style="text-align:right;">{$goods.goods_price|default=''}</td>
+                  <td>{$goods.subtotal|default=''}</td>
+                </tr>
+              {/volist}
+                <tr>
+                  <td colspan="4" style="text-align:right;">运费：</td>
+                  <td style="color: #f00">{$info.freight|default=''}</td>
+           
+                </tr>
+                <tr>
+                  <td colspan="4" style="text-align:right;">合计：</td>
+                  <td style="color: #f00">{$info.order_price|default=''}</td>
+               
+                </tr>
+                <tr>
+                  <td colspan="4" style="text-align:right;">备注：</td>
+                  <td>{$info.order_remark|default=''}</td>
+                </tr>
+               
+
+         
+        </tbody>
+    </table>
+  </div>
+</div>
+
+
+<div class="box" style="border-top:3px solid #fff;">
+  
+  <div class="box-body table-responsive">
+    <table  class="table table-bordered table-hover">
+      <thead>
+      <tr >
+          <th colspan="4" style=" text-align: center ;  font-size: 20px; background-color: #f5f5f5">收货地址信息</th>
+      </tr>
+      <tr>
+          <th style="width: 10%;">收货人</th>
+          <th style="width: 10%;">手机号</th>
+          <th style="width: 30%;">收货地址</th>
+  
+      </tr>
+      </thead>
+
+     
+        <tbody>         
+                <tr>
+                  <td>{$info.order_name}</td>
+                  <td>{$info.mobile}</td>
+                  <td>{$info.address}</td>
+                
+                </tr>        
+        </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+
+<div class="box" style="border-top:3px solid #fff;">
+  
+  <div class="box-body table-responsive">
+    <table  class="table table-bordered table-hover">
+      <thead>
+      <tr >
+          <th colspan="4" style=" text-align: center ;  font-size: 20px; background-color: #f5f5f5">物流信息</th>
+      </tr>
+      <tr>
+          <th style="width: 5%;">通知</th>
+          <th style="width: 5%;">时间</th>
+          <th style="width: 30%;">包裹信息</th>
+      </tr>
+      </thead>
+        <tbody>         
+        {if $logistics == null}
+       		<tr>
+	           <td colspan="3" style="padding-left: 50%">暂无信息</td>
+	        </tr> 
+        {else /}
+        {volist name="logistics" id="logistics"}
+	        <tr>
+	           <td>{$logistics.Operator}</td>
+	           <td>{$logistics.OperateTime}</td>
+	           <td style="color: #f00">{$logistics.content}</td>
+	        </tr> 
+         {/volist}
+         {/if}
+              
+        </tbody>  
+    </table>
+  </div>
+</div>
+
+  

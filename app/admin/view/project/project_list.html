@@ -1,0 +1,50 @@
+<div class="box">
+  <div class="box-header">
+
+        <div class="width_chown">
+        <ob_link><a href="{:url('articleCategoryAdd')}" class="btn"><i class="fa fa-plus"></i> 新 增</a></ob_link>
+        </div>        
+  </div>
+  <div class="box-body table-responsive">
+    <table  class="table table-bordered table-hover">
+      <thead>
+      <tr>
+          <th>项目</th>
+          <th>兑换类型</th>
+          <th>有效期</th>
+          <th>失效期</th>
+          <th>操作</th>
+      </tr>
+      </thead>
+      
+      {notempty name='list'}
+        <tbody>
+            {volist name='list' id='vo'}
+                <tr>
+                  <td>{$vo.gift_name}</td>
+                
+                  <td> {if $vo['show_price']==2}
+                       限制一次兑换
+                      {elseif  $vo['show_price']==1 /}
+                       套餐兑换
+                      {elseif  $vo['show_price']=='0' /}
+                       普通兑换
+                      {/if}</td>
+                  <td>{$vo.open_time}</td>
+                  <td>{$vo.tie_time}</td>
+                  <td class="col-md-2 text-center">
+                      <ob_link><a href="{:url('ProjectCategoryEdit', array('id' => $vo['id']))}" class="btn"><i class="fa fa-edit"></i> 编辑</a></ob_link>
+                      <ob_link><a class="btn confirm ajax-get"  href="{:url('ProjectCategoryDel', array('id' => $vo['id']))}"><i class="fa fa-trash-o"></i>删除</a></ob_link>
+                  </td>
+                </tr>
+            {/volist}
+        </tbody>
+        {else/}
+        <tbody><tr class="odd"><td colspan="4" class="text-center" valign="top">{:config('empty_list_describe')}</td></tr></tbody>
+      {/notempty}
+    </table>
+  </div>
+  <div class="box-footer clearfix text-center">
+      {$list->render()}
+  </div>
+</div>

@@ -1,0 +1,157 @@
+<div class="box">
+  <div class="box-header">
+        <!-- <ob_link><a href="{:url('goodsAdd')}" class="btn"><i class="fa fa-plus"></i> 添加商品</a></ob_link> -->
+        <div class="width_chown">
+         <ob_link><a class="btn export" url="{:url('exportOrderList')}"><i class="fa fa-download"></i> 导 出</a></ob_link>
+        </div>
+
+        <div class="new-order-box-tools box-tools">
+
+        <div class="new-order-input-group input-group input-group-sm search-form chown">
+			<input type="text" class="layui-input " name="time_start" id="test12" readonly="readonly" placeholder="选择时间范围"  value="{$time_start|default=''}" style="width: 200px;height: 30px">
+			
+			<!-- <input type="text" class="layui-input " name="time_stop" id="test11" readonly="readonly" placeholder="结束时间" value="{$time_stop|default=''}" style="width: 150px;height: 30px"> -->
+			<select style="width: 150px;height: 30px" name="order_status">
+				<option value="">请选择订单状态</option>
+				<option value="6" {notempty name="$where['o.order_statuse']"}{if condition="$where['o.order_statuse'] eq 6"} selected="selected" {/if}{/notempty} >新建</option>
+				<option value="1" {notempty name="$where['o.order_status']"}{if condition="$where['o.order_status'] eq 1"} selected="selected" {/if}{/notempty} >签收</option>
+				<option value="4" {notempty name="$where['o.order_status']"}{if condition="$where['o.order_status'] eq 4"} selected="selected" {/if}{/notempty} >退换货</option>
+				<option value="5" {notempty name="$where['o.order_status']"}{if condition="$where['o.order_status'] eq 5"} selected="selected" {/if}{/notempty} >已发货</option>
+				<option value="-3" {notempty name="$where['o.order_status']"}{if condition="$where['o.order_status'] eq -3"} selected="selected" {/if}{/notempty} >拒收</option>
+				<option value="-2" {notempty name="$where['o.order_status']"}{if condition="$where['o.order_status'] eq -2"} selected="selected" {/if}{/notempty} >取消</option>
+			</select>
+			<select style="width: 150px;height: 30px" name="project_id">
+			<option value="">请选择项目</option>
+			{volist name='project_list' id='vo'}
+				<option value="{$vo['id']}" {notempty name="$wheres"}{if condition="$wheres eq $vo['id']"} selected="selected" {/if}{/notempty} >{$vo['gift_name']}
+				</option>
+				}
+			{/volist}
+			</select>
+            <input name="search_data" class="pull-right search-input" value="{:input('search_data')}" placeholder="支持卡号,收货人姓名,手机号" type="text">
+        
+        <!-- <input type="text" class="layui-input " name="time_stop" id="test11" readonly="readonly" placeholder="结束时间" value="{$time_stop|default=''}" style="width: 150px;height: 30px"> -->
+        
+
+
+
+        
+        
+
+
+        <script type="text/javascript">
+           layui.use('laydate', function(){
+             var laydate = layui.laydate;
+          //时间选择器
+           var startdate = laydate.render({
+              elem: '#test12'
+           //  ,type: 'datetime'
+              ,range: true
+            //   , done: function (value, dates,endDate) {
+            //     console.log('开始');
+
+            //     enddate.config.min = {
+            //         year: dates.year,
+            //         month: dates.month - 1,//关键
+            //         date: dates.date,
+            //         hours: dates.hours,
+            //         minutes: dates.minutes,
+            //         seconds: dates.seconds,
+                   
+            //     };
+            // }
+            });
+         //             //时间选择器
+         // var enddate = laydate.render({
+         //      elem: '#test11'
+         //      ,type: 'datetime'
+            
+         //       , done: function (value, dates) {
+         //        startdate.config.max = {
+         //            year: dates.year,
+         //            month: dates.month - 1,//关键
+         //            date: dates.date,
+         //            hours: dates.hours,
+         //            minutes: dates.minutes,
+         //            seconds: dates.seconds,
+                   
+         //        };
+         //    }
+         //    });
+           });
+
+ 
+        </script>
+          
+            <div class="input-group-btn">
+              <button type="button" id="search" url="{:url('orderlist')}" class="btn btn-default"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="box-body table-responsive">
+    <table  class="table table-bordered table-hover">
+      <thead>
+      <tr>
+          <th>积分卡号</th>
+          <th>归属项目</th>
+          <th>订单号</th>
+          <th>收货人</th>
+          <th>手机号</th>
+          <th>下单时间</th>
+          <th>应付金额</th>
+          <th>支付状态</th>
+          <th>订单状态</th>
+          <th>操作</th>
+
+      </tr>
+      </thead>
+
+      {notempty name='list'}
+        <tbody>
+            {volist name='list' id='vo'}
+                <tr>
+                  <td>{$vo.card_sn}</td>
+                  <td>{$vo.gift_name}</td>
+                  <td><a href="{:url('order/orderEdit', array('id' => $vo['id']))}">{$vo.order_sn}</a></td>
+                  <td>{$vo.order_name}</td>
+                  <td>{$vo.mobile}</td>
+                  <td>{$vo.create_time}</td>
+                  <td>{$vo.order_price}</td>
+                  <td>{if $vo['order_pay'] == 1 } 已支付{else / } 未支付 {/if}</td>
+                   <td> {if $vo['order_status']==0}
+                       新建
+                      {elseif  $vo['order_status']==1 /}
+                        签收
+                      {elseif   $vo['order_status']==4 /}
+                        退换货
+                        {elseif  $vo['order_status']==5 /}
+                         已发货
+                         {elseif  $vo['order_status']=='-3' /}
+                         拒收 
+                      {elseif  $vo['order_status']=='-2' /}
+                          取消
+                      {/if}</td>
+                  <td class="col-md-2 text-center">
+                  <ob_link><a href="{:url('orderEdit', array('id' => $vo['id']))}" class="btn"><i class="fa fa-edit"></i> 查看</a></ob_link>
+                      <ob_link><a class="btn confirm ajax-get"  href="{:url('orderDel', array('id' => $vo['id']))}"><i class="fa fa-trash-o"></i> 删除</a></ob_link>
+                  </td>
+                </tr>
+            {/volist}
+        </tbody>
+        {else/}
+        <tbody><tr class="odd"><td colspan="10" class="text-center" valign="top">{:config('empty_list_describe')}</td></tr></tbody>
+      {/notempty}
+    </table>
+  </div>
+  <div class="box-footer clearfix text-center">
+      {$list->render()}
+  </div>
+</div>
+<script>
+    //导出功能
+    $(".export").click(function(){
+
+        window.location.href = searchFormUrl($(".export"));
+    });
+</script>

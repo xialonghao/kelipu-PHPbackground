@@ -1,0 +1,92 @@
+<form action="{:url()}" method="post" class="form_single">
+    <div class="box">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>轮播图名称</label>
+              <span class="">（轮播图名称）</span>
+              <input class="form-control" name="img_name" placeholder="请输入图片名称" value="{$info['img_name']|default=''}" type="text">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>轮播图链接</label>
+              <span class="">（轮播图链接）</span>
+              <input class="form-control" name="jump" placeholder="请输入轮播图链接" value="{$info['jump']|default=''}" type="text">
+            </div>
+          </div> 
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>项目下拉列表</label>
+            
+                <select name="cate_affiliation" class="form-control">
+                    <option value="0"  >请选择</option>
+                    {volist name='project_list' id='vo'}
+                        <option value="{$vo['id']}" {notempty name="info['cate_affiliation']"}{if condition="$info['cate_affiliation'] eq $vo['id']"} selected="selected" {/if}{/notempty} >{$vo['gift_name']}</option>
+                    {/volist}
+                </select>
+            </div>
+          </div>
+            <div class="col-md-12">
+           	</div>
+          <div class="col-md-6">
+            <div class="form-group">
+                <label>封面图片</label>
+                <span class="">（请上传单张封面图片、<span style="color:#f00">尺寸：750*400、图片格式：png，jpg、图片大小：建议小于1M</span>）</span>
+                <br/>
+                {assign name="thumb" value="$info.thumb|default='0'" /}
+                {:widget('file/index', ['name' => 'thumb', 'value' => $thumb, 'type' => 'img'])}
+            </div>
+          </div>
+
+          <!-- <div class="col-md-6">
+            <div class="form-group">
+                <label>多图片</label>
+                <span class="">（请上传多图片）</span>
+                <br/>
+
+                {assign name="img_ids" value="$info.img_ids|default=''" /}
+                {:widget('file/index', ['name' => 'img_ids', 'value' => $img_ids, 'type' => 'imgs'])}
+
+            </div>
+          </div> -->
+
+
+          <!-- <div class="col-md-6">
+            <div class="form-group">
+                <label>附件</label>
+                <span class="">（文章可下载附件）</span>
+                <br/>
+                {assign name="file_id" value="$info.file_id|default='0'" /}
+                {:widget('file/index', ['name' => 'file_id', 'value' => $file_id, 'type' => 'file'])}
+            </div>
+          </div> -->
+
+          </div>
+        <!-- <div class="row">
+
+
+          <div class="col-md-12">
+            <div class="form-group">
+                <label>文章内容</label>
+                <textarea class="form-control textarea_editor" name="content" placeholder="请输入文章内容">{$info['content']|default=''}</textarea>
+                {:widget('editor/index', array('name'=> 'content','value'=> ''))}
+            </div>
+          </div>
+
+        </div> -->
+
+      <div class="box-footer">
+
+          <input type="hidden" name="uid" value="{$member_info['id']}"/>
+
+        <input type="hidden" name="id" value="{$info['id']|default='0'}"/>
+
+        {include file="layout/edit_btn_group"/}
+
+      </div>
+
+      </div>
+      </div>
+</form>

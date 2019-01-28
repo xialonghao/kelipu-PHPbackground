@@ -1,0 +1,94 @@
+<div class="box">
+  <div class="box-header">
+        <!-- <ob_link><a href="{:url('goodsAdd')}" class="btn"><i class="fa fa-plus"></i> 添加商品</a></ob_link> -->
+         <ob_link><a class="btn export" url="{:url('exportOrderList')}"><i class="fa fa-download"></i> 导 出</a></ob_link>
+
+        <br/>
+
+        <div class="box-tools ">
+
+        <div class="input-group input-group-sm search-form">
+      <input type="text" class="layui-input" id="test11" placeholder="yyyy年MM月dd日" style="width: 150px;height: 30px">
+        <input type="text" class="layui-input" id="test12" placeholder="yyyy年MM月dd日" style="width: 150px;height: 30px">
+        <script type="text/javascript">
+           layui.use('laydate', function(){
+             var laydate = layui.laydate;
+          //时间选择器
+  laydate.render({
+    elem: '#test11'
+    ,type: 'datetime'
+  });
+           //时间选择器
+  laydate.render({
+    elem: '#test12'
+    ,type: 'datetime'
+  });
+           });
+        </script>
+          <select style="width: 150px;height: 30px" name="project_id">
+              <option value="">请选择</option>
+              {volist name='project_list' id='vo'}
+                        <option value="{$vo['id']}" {notempty name="$wheres"}{if condition="$wheres eq $vo['id']"} selected="selected" {/if}{/notempty} >{$vo['gift_name']}
+                         </option>
+                        }
+                    {/volist}
+          </select>
+            <input name="search_data" class="pull-right search-input" value="{:input('search_data')}" placeholder="支持卡号,收货人姓名,手机号" type="text">
+            <div class="input-group-btn">
+              <button type="button" id="search" url="{:url('orderlist')}" class="btn btn-default"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="box-body table-responsive">
+    <table  class="table table-bordered table-hover">
+      <thead>
+      <tr>
+          <th>积分卡号</th>
+          <th>归属项目</th>
+          <th>订单号</th>
+          <th>收件人</th>
+          <th>手机号</th>
+          <th>下单时间</th>
+          <th>应付金额</th>
+          <th>支付状态</th>
+          <th>操作</th>
+
+      </tr>
+      </thead>
+
+      {notempty name='list'}
+        <tbody>
+            {volist name='list' id='vo'}
+                <tr>
+                  <td>{$vo.card_sn}</td>
+                  <td>{$vo.gift_name}</td>
+                  <td><a href="{:url('order/orderEdit', array('id' => $vo['id']))}">{$vo.order_sn}</a></td>
+                  <td>{$vo.order_name}</td>
+                  <td>{$vo.mobile}</td>
+                  <td>{$vo.create_time}</td>
+                  <td>{$vo.order_price}</td>
+                  <td>{if $vo['order_pay'] == 1 } 已支付{else / } 未支付 {/if}</td>
+                  <td class="col-md-2 text-center">
+                  <ob_link><a href="{:url('orderEdit', array('id' => $vo['id']))}" class="btn"><i class="fa fa-edit"></i> 查看</a></ob_link>
+                      <ob_link><a class="btn confirm ajax-get"  href="{:url('orderDel', array('id' => $vo['id']))}"><i class="fa fa-trash-o"></i> 删除</a></ob_link>
+                  </td>
+                </tr>
+            {/volist}
+        </tbody>
+        {else/}
+        <tbody><tr class="odd"><td colspan="7" class="text-center" valign="top">{:config('empty_list_describe')}</td></tr></tbody>
+      {/notempty}
+    </table>
+  </div>
+  <div class="box-footer clearfix text-center">
+      {$list->render()}
+  </div>
+</div>
+<script>
+    //导出功能
+    $(".export").click(function(){
+
+        window.location.href = searchFormUrl($(".export"));
+    });
+</script>
